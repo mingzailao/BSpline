@@ -33,14 +33,7 @@ class BsplneBase:
                     return 0
             else:
                 return 0
-            # if U[i+p]!=U[i] and U[i+p+1]!=U[i+1]:
-            #         return (u-U[i])/(U[i+p]-U[i])*self.GetValue(u,i,degree)+(U[i+p-1+1]-u)/(U[i+p+1]-U[i+1])*self.GetValue(u,i+1,degree)
-            # elif U[i+p]!=U[i]:
-            #         return (u-U[i])/(U[i+p]-U[i])*self.GetValue(u,i,degree)
-            # elif U[i+p+1]!=U[i+1]:
-            #         return (U[i+p-1+1]-u)/(U[i+p+1]-U[i+1])*self.GetValue(u,i+1,degree)
-            # else:
-            #         return 0
+
 def getPoint():
     dim=input("please enter the dimention you want:\n")
     n=4
