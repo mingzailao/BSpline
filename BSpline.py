@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import operator
 
 
-class BsplneBase:
+class BsplineBase:
     def __init__(self,U=np.asarray([0,0,0,0,0.5,1,1,1,1]),n=5):
         self.U=U
         self.n=n
@@ -41,8 +41,22 @@ def getPoint():
     for i in range(n):
         Points[i]=np.asarray(input("please enter the point\n"),float)
     return Points
-
-def BsplineCurve(Points,B=BsplneBase(U=np.asarray([0,0,0,0,0.5,1,1,1,1]),n=5),T=r_[0:1:0.001]):
+def GetPlace(U=np.asarray([0,0,0,0,0.5,1,1,1,1]),u=0.5):
+    for i in range(U.shape[0]):
+        if u<=U[i+1] and u>=U[i]:
+            return i
+    return "out of the boundary!"
+#add 0.5 to U to compute new Points2
+def GetnewPoints(U=np.asarray([0,0,0,0,0.5,1,1,1,1]),Points=np.asarray([[0,0,0],[-1,2,-2],[5,6,-3],[2,-4,-4],[5,-6,8]]),u=0.5,degree=3):
+    Points2=np.zeros([Points.shape[0]+1,3])
+    i=GetPlace(U,u);
+    Points2[:(i-degree)]=Points[:(i-degree)]
+    for j in range(i-degree+1,i+1):
+        alpha=(u-U[j])/(U[j+degree]-U[j])
+        Points2[j]=(1-alpha)*Points[j-1]+alpha*Points[j]
+    Points2[(i+1):]=Points[i:]
+    return Points2
+def BsplineCurve(Points,B,T=r_[0:1:0.001]):
     ans=np.zeros([T.size,Points.shape[1]])
     for j in range(T.size):
         for i in range(Points.shape[0]):
@@ -50,29 +64,39 @@ def BsplineCurve(Points,B=BsplneBase(U=np.asarray([0,0,0,0,0.5,1,1,1,1]),n=5),T=
     return ans.transpose()
 
 
-Points=np.asarray([[0,0,0],[-1,2,-2],[5,6,-3],[2,-4,-4],[5,-6,8]])
-print Points.shape[1]
-PP=Points.transpose()
-U=np.asarray([0,0,0,0,0.5,1,1,1,1])
-B=BsplneBase()
+Points1=np.asarray([[0,0,0],[-1,2,-2],[5,6,-3],[2,-4,-4],[5,-6,8]])
+P1=Points1.transpose()
+U1=np.asarray([0,0,0,0,0.5,1,1,1,1])
+B1=BsplineBase(U1,n=5)
 
 
-#
+Points2=GetnewPoints(U1,Points1,u=0.5,degree=3)
+P2=Points2.transpose()
+U2=[0,0,0,0,.5,.5,1,1,1,1]
+B2=BsplineBase(U2,n=6)
+
 T=r_[0:1:0.001]
-ans=BsplineCurve(Points,B,T)
+C1=BsplineCurve(Points1,B1,T)
 
-x=ans[0]
-y=ans[1]
-z=ans[2]
+x1=C1[0]
+y1=C1[1]
+z1=C1[2]
 
+C2=BsplineCurve(Points2,B2,T)
+x2=C2[0]
+y2=C2[1]
+z2=C2[2]
 
 
 fig=plt.figure()
 ax=p3.Axes3D(fig)
-plt.plot(PP[0],PP[1],PP[2],'mo:')
-ax.plot_wireframe(x,y,z,color='b')
+plt.plot(P1[0],P1[1],P1[2],'mo:')
+plt.plot(P2[0],P2[1],P2[2],'ro:')
+ax.plot_wireframe(x1,y1,z1,color='b')
+ax.plot_wireframe(x2,y2,z2,color='g')
 plt.show()
 
+Points3=np.array([[ 0. ,  0. ,  0. ],[-1. ,  2. , -2. ],[ 2. ,  4. , -2.5],[ 0. ,  0. ,  0. ],[ 2. , -4. , -4. ],[ 5. , -6. ,  8. ]])
 
 
 
