@@ -1,11 +1,6 @@
-# BSpline
->from numpy import *
+open BSplineSurface.html or visit https://mingzailao.github.io/Slides/BSplineSurface.html or https://mingzailao.live/Slides/BSplineSurface.html for better visualization.
 
->import mpl_toolkits.mplot3d.axes3d as p3
 
->import numpy as np
-
->import matplotlib.pyplot as plt
 
 
 
